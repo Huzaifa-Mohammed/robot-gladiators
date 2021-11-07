@@ -6,40 +6,49 @@
 
 
 var fight = function(enemy) {
+    // keep track of who goes first
+    var isPlayerTurn = true;
 
-    while (playerInfo.health > 0 && enemy.health > 0) {
-
-        if (fightOrSkip()) {
-            // if true, leave fight by breaking loop
-            break;
-        }
-
-        //Subtract the value of `playerAttack` from the value of `enemyHealth` and use that result to update the value in the `enemyHealth` variable
-        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-        enemy.health = Math.max(0, enemy.health - damage);
-        // Log a resulting message to the console so we know that it worked.
-        console.log(playerInfo.Name + " attacked " + enemy.name + "." + enemy.name + " now has " + enemy.health + " health remaining.");
-        //check health
-        if (enemy.health <= 0) {
-            window.alert(enemy.name + " has died.");
-            break;
-        } else {
-            window.alert(enemy.name + " still has " + enemy.health + "health left");
-        }
-
-        // Subtract the value of `enemyAttack` from the value of `playerHealth` and use that result to update the value in the `playerHealth` variable.
-        var damage = randomNumber(enemy.attack - 3, enemy.attack);
-        playerInfo.health = Math.max(0, playerInfo.health - damage);
-        // Log a resulting message to the console so we know that it worked.
-        console.log(enemy.name + " Attacked " + playerInfo.Name + ". " + playerInfo.Name + " now has " + playerInfo.health + " health remaning.");
-        //check players health
-        if (playerInfo.health <= 0) {
-            window.alert(playerInfo.Name + " has died!");
-            break;
-        } else {
-            window.alert(playerInfo.Name + " still has " + playerInfo.health + " health left.");
-        }
+    // randomly change turn order
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
     }
+    while (playerInfo.health > 0 && enemy.health > 0) {
+        if (isPlayerTurn) {
+            if (fightOrSkip()) {
+                // if true, leave fight by breaking loop
+                break;
+            }
+
+            //Subtract the value of `playerAttack` from the value of `enemyHealth` and use that result to update the value in the `enemyHealth` variable
+            var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+            enemy.health = Math.max(0, enemy.health - damage);
+            // Log a resulting message to the console so we know that it worked.
+            console.log(playerInfo.Name + " attacked " + enemy.name + "." + enemy.name + " now has " + enemy.health + " health remaining.");
+            //check health
+            if (enemy.health <= 0) {
+                window.alert(enemy.name + " has died.");
+                break;
+            } else {
+                window.alert(enemy.name + " still has " + enemy.health + "health left");
+            }
+
+            // Subtract the value of `enemyAttack` from the value of `playerHealth` and use that result to update the value in the `playerHealth` variable.
+            var damage = randomNumber(enemy.attack - 3, enemy.attack);
+            playerInfo.health = Math.max(0, playerInfo.health - damage);
+            // Log a resulting message to the console so we know that it worked.
+            console.log(enemy.name + " Attacked " + playerInfo.Name + ". " + playerInfo.Name + " now has " + playerInfo.health + " health remaning.");
+            //check players health
+            if (playerInfo.health <= 0) {
+                window.alert(playerInfo.Name + " has died!");
+                break;
+            } else {
+                window.alert(playerInfo.Name + " still has " + playerInfo.health + " health left.");
+            }
+        } // switch turn order for next round
+        isPlayerTurn = !isPlayerTurn;
+    }
+
 
 };
 
@@ -60,7 +69,7 @@ var endGame = function() {
 
 var shop = function() {
     var shopOptionPrompt = window.prompt("Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice.");
-    shopOptionPrompt = parseInt(shopOptionPrompt);
+
     switch (shopOptionPrompt) {
         case "REFILL":
         case "refill":
